@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float speed = 8f; //탄알 이동 속력
+    public float speed = 2f; //탄알 이동 속력
     private Rigidbody bullet_rigidbody; //이동에 사용할 리지드바디 컴포넌트
 
     // Start is called before the first frame update
@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviour
         bullet_rigidbody.velocity = transform.forward * speed;
 
         //3초 뒤에 자신의 게임 오브젝트 파괴
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 6f);
     }
 
     //collider에 isTrigger가 체크표시 돼있을 때 충돌 시 자동으로 실행되는 메서드

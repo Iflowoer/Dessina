@@ -7,9 +7,9 @@ public class Bullet_Spawner : MonoBehaviour
 
     public GameObject bullet_prefab;            //생성할 탄알의 원본 프리팹
     public float spawn_rate_min = 0.5f;         //최소 생성 주기
-    public float spawn_rate_max = 3f;           //최대 생성 주기
+    public float spawn_rate_max = 1f;           //최대 생성 주기
 
-    Transform target;                           //발사할 대상
+                           //발사할 대상
     float spawn_rate;                           //생성주기
     float time_after_spawn;                     //최근 생성 시점에서 지난 시간            
 
@@ -21,7 +21,7 @@ public class Bullet_Spawner : MonoBehaviour
         //탄알 생성 간격을 spawn_rate_min 과 spawn_rate_max 사이에서 랜덤 지정
         spawn_rate = Random.Range(spawn_rate_min, spawn_rate_max);
         //player_controller 컴포넌트를 가진 게임 오브젝트를 찾아 조준 대상으로 설정
-        target = FindObjectOfType<Player_controller>().transform;           //씬에 존재하는 모든 오브젝트들을 검사하여 지정한 타입과 일치한 오브젝트를 가져오는 거기때문에 여러번 실행시킬 경우 프로그램이 심각하게 느려질 수 있습니다.
+        //target = FindObjectOfType<Player_controller>().transform;           //씬에 존재하는 모든 오브젝트들을 검사하여 지정한 타입과 일치한 오브젝트를 가져오는 거기때문에 여러번 실행시킬 경우 프로그램이 심각하게 느려질 수 있습니다.
         //FindObjectsOfType 메서드는 지정한 타입의 오브젝트가 여러명이고 그 오브젝트들을 가져올 때 사용한다.
     }
 
@@ -40,12 +40,19 @@ public class Bullet_Spawner : MonoBehaviour
             //bullet_prefad의 복제본을
             //transform.position 위치와 transform.rotation 회전으로 생성
             GameObject bullet
-                = Instantiate(bullet_prefab, transform.position, transform.rotation);
-            //생성된 bullet게임 오브젝트의 정면 방향이 target을 향하도록 회전
-            bullet.transform.LookAt(target);
+                = Instantiate(bullet_prefab);
+            //생성된 bullet게임 오브젝트의 정면 방향이 target을 향하도록 회전 
+            bullet.transform.position = transform.position;
+            bullet.transform.LookAt(transform.position + transform.forward);
 
             //다음번 생성 간격을 spawn_rate_min, spawn_rate_max 사이에서 랜덤 지정
             spawn_rate = Random.Range(spawn_rate_min, spawn_rate_max);
         }
+    }
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Vector3 END = transform.position + transform.forward * 3f;
+        Gizmos.DrawLine(transform.position, END);
     }
 }
